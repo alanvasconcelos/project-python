@@ -15,9 +15,6 @@ class LocalizacaoGeografica():
     def _set_longitude(self, longitude):
         self._longitude = longitude
 
-    def dist(self, objLocGeo):
-    	pass
-
     latitude = property(_get_latitude, _set_latitude)
     longitude = property(_get_longitude, _set_longitude)
 
@@ -83,14 +80,12 @@ class UnidadeDeSaude(LocalizacaoGeografica):
     dscAdapFisdo = property(_get_dscAdapFisdo, _set_dscAdapFisdo)
     sitEquipamentos = property(_get_sitEquipamentos, _set_sitEquipamentos)
 
-
 class Endereco():
     def __init__(self, logadouro, bairro, cidade, telefone):
         self._logadouro = logadouro
         self._bairro = bairro
         self._cidade = cidade
         self._telefone = telefone
-
 
     def _get_logadouro(self):
         return self._logadouro
@@ -120,23 +115,3 @@ class Endereco():
     bairro = property(_get_bairro, _set_bairro)
     cidade = property(_get_cidade, _set_cidade)
     telefone = property(_get_telefone, _set_telefone)
-
-class NumeroTelefoneInvalido(Exception):
-    def __init__(self, numero, mensagem = "Numero de telefone invalido"):
-        super().__init__(mensagem)
-        self._numero = numero
-        self._mensagem = mensagem
-        
-    def magicGet(self, atrib):
-        if atrib == 'numero':
-            return self._numero
-        elif atrib == 'mensagem':
-            return self._mensagem
-        else:
-            return None
-        
-    def magicSet(self, atrib, value):
-        if atrib == 'numero':
-            self._numero = value
-        elif atrib == 'mensagem':
-            self._mensagem = value

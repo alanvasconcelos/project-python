@@ -57,19 +57,20 @@ class View(QApplication):
         self.searchAll.clicked.connect(self.procurarUnidades)
 
         self.web = QWebView(self.window)
-        self.web.setMinimumSize(1200,500)
+        self.web.setMinimumSize(1200, 500)
         self.web.page().mainFrame().addToJavaScriptWindowObject('self', self)
         self.web.setHtml(maphtml)
 
-        #self.text = QTextEdit(self.window)
+        self.report = QTextEdit()
+        self.report.setFixedHeight(200)
 
         self.layout = QVBoxLayout(self.window)
-        #self.layout.addWidget(self.text)
         self.layout.addWidget(self.latitude)
         self.layout.addWidget(self.longitude)
         self.layout.addWidget(self.search)
         self.layout.addWidget(self.searchAll)
         self.layout.addWidget(self.web)
+        self.layout.addWidget(self.report)
 
         self.window.show()
         self.exec_()
@@ -140,31 +141,25 @@ class View(QApplication):
               </html>
             """.format(lat=unSaude.latitude,lon=unSaude.longitude,nome=unSaude.nome)
             self.web.setHtml(maphtml)
-            print(unSaude.longitude)
-            print(unSaude.latitude)
 
     def showAll(self, unidades):
-        lista = ''
+        self.report.clear()
+        lista = 'CODIGO DA UNIDADE, NOME DA UNIDADE, QTD DE VEZES QUE FOI A MAIS PROCURADA\n'
         for lin in unidades:
-            for col in lin:
-                lista += col + ','
-            lista += '<br/>'
+            lista += '{}, {}, {}\n'.format(str(lin[1]), lin[2], str(lin[0]))
+        self.report.setText(lista)
 
     def procurarUnidade(self):
         longitude = self.getLongitude()
         latitude = self.getLatitude()
-        print(longitude)
-        print(latitude)
         netdata = model.NetDataModel()
         unitHealth = netdata.searchNearUnitHealth(longitude, latitude)
         self.show(unitHealth)
-        UnidadeDeSaudeDAO.insert(unitHealth)
+        UnidadeDeSaudeDAO().insert(unitHealth)
 
     def procurarUnidades(self):
         netdata = model.NetDataModel()
-        unitHealth = netdata.searchAllUnitHealth()
-        self.showAll(unitHealth)
-        units = UnidadeDeSaudeDAO.searchAll()
+        units = UnidadeDeSaudeDAO().searchAll()
         self.showAll(units)
         
     def getLongitude(self):
