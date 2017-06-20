@@ -45,7 +45,7 @@ class View(QApplication):
     def __init__(self):
         QApplication.__init__(self, [])
         self.window = QWidget()
-        self.window.setWindowTitle("LP3");
+        self.window.setWindowTitle("Liga Social");
 
         self.latitude = QLineEdit()
         self.latitude.setPlaceholderText("Latitude")
